@@ -3,15 +3,17 @@ import pygame
 # display setup
 WIDTH, HEIGHT = 800, 600
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
+ICON = pygame.image.load('Icon.png')
 fps = 60
 
 WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
+BLACK = (100, 230, 80)
 
 
 def draw_window():
     """ update game's look """
     WINDOW.fill(BLACK)
+    pygame.display.set_icon(ICON)
     pygame.display.update()
 
 # game loop
