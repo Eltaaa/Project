@@ -3,11 +3,11 @@ import pygame
 # display setup
 WIDTH, HEIGHT = 800, 600
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
-ICON = pygame.image.load('Icon.png')
+ICON = pygame.image.load('Asset\Icon.png')
 fps = 60
 
 WHITE = (255, 255, 255)
-BLACK = (100, 230, 80)
+BLACK = (0, 0, 0)
 
 
 def draw_window():
@@ -31,7 +31,7 @@ def main():
         pygame.display.set_caption('Word Game')
         draw_window()
 
-    pygame.quit
+    pygame.quit()
 
 
 if __name__ == '__main__':
