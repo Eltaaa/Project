@@ -10,7 +10,7 @@ ICON = pygame.image.load('Asset\\Icon.jpg')
 pygame.display.set_icon(ICON)
 pygame.display.set_caption('Word Game')
 
-# ----------
+# ----------,
 # CLOCK
 # ----------
 clock = pygame.time.Clock()
@@ -28,11 +28,19 @@ YELLOW = (255, 255, 0)
 # ----------
 titlefont = pygame.font.SysFont("CopperPlate Gothic", 25)
 
+# ----------
+# IMAGE LOAD
+# ----------
+gametitle = pygame.image.load(
+    'Asset\\title.png')
+
 
 def draw_window():
     """ update game's look """
     WINDOW.fill(BLACK)
     pygame.display.update()
+
+# MAIN MENU
 
 
 def startscreen():
@@ -45,22 +53,22 @@ def startscreen():
     pygame.display.update()
     clock.tick(1)
 
-    gametitle = titlefont.render("IWonder", True, YELLOW)
-    WINDOW.blit(gametitle, [50, 100])
+    WINDOW.blit(gametitle, [100, 100])
     pygame.display.update()
     clock.tick(1)
 
     while OnStartScreen:
         WINDOW.fill(BLACK)
-        WINDOW.blit(gametitle, [50, 100])
+        WINDOW.blit(gametitle, [100, 100])
+
+        
         pygame.event.get()                      # will crash if not continuously call event, serve as place holder
 
         cursor = pygame.mouse.get_pos()
         clicked = pygame.mouse.get_pressed()
 
+
 # MAIN GAME
-
-
 def main():
     ''' main function that run the game'''
     startscreen()                               # Game Start
