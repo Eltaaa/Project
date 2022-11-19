@@ -1,37 +1,75 @@
 import pygame
-# from category import *
-# display setup
+
+# ----------
+# DISPLAY SETUP
+# ----------
+pygame.init()
 WIDTH, HEIGHT = 800, 600
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
-ICON = pygame.image.load('Asset\Icon.png')
-fps = 60
+ICON = pygame.image.load('Asset\\Icon.jpg')
+pygame.display.set_icon(ICON)
+pygame.display.set_caption('Word Game')
 
+# ----------
+# CLOCK
+# ----------
+clock = pygame.time.Clock()
+fps = 15
+
+# ----------
+# COLORS
+# ----------
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+YELLOW = (255, 255, 0)
+
+# ----------
+# FONTS
+# ----------
+titlefont = pygame.font.SysFont("CopperPlate Gothic", 25)
 
 
 def draw_window():
     """ update game's look """
     WINDOW.fill(BLACK)
-    pygame.display.set_icon(ICON)
     pygame.display.update()
 
-# game loop
+
+def startscreen():
+    ''' start game main menu'''
+
+    clock.tick(1)
+    OnStartScreen = True
+
+    WINDOW.fill(BLACK)
+    pygame.display.update()
+    clock.tick(1)
+
+    gametitle = titlefont.render("IWonder", True, YELLOW)
+    WINDOW.blit(gametitle, [50, 100])
+    pygame.display.update()
+    clock.tick(1)
+
+    while OnStartScreen:
+        WINDOW.fill(BLACK)
+        WINDOW.blit(gametitle, [50, 100])
+        pygame.event.get()                      # will crash if not continuously call event, serve as place holder
+
+        cursor = pygame.mouse.get_pos()
+        clicked = pygame.mouse.get_pressed()
+
+# MAIN GAME
 
 
 def main():
     ''' main function that run the game'''
-    tickspeed = pygame.time.Clock()
+    startscreen()                               # Game Start
+
     run = True
     while run:
-        tickspeed.tick(fps)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-        pygame.display.set_caption('Word Game')
-        draw_window()
-
-    pygame.quit()
 
 
 if __name__ == '__main__':
