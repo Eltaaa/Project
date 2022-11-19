@@ -1,5 +1,5 @@
 import pygame
-
+import time
 # ----------
 # DISPLAY SETUP
 # ----------
@@ -22,6 +22,7 @@ fps = 60
 white = (255, 255, 255)
 lightGray = (100, 100, 100)
 black = (0, 0, 0)
+green = (0, 255, 0)
 yellow = (255, 255, 0)
 
 # ----------
@@ -69,34 +70,36 @@ def startscreen():
         settingsButtonText = mainmenufont.render('SETTINGS', True, white)
         quitButtonText = mainmenufont.render('QUIT', True, white)
 
-        window.blit(playButtonText, (350, 300))
-        window.blit(settingsButtonText, (315, 400))
-        window.blit(quitButtonText, (350, 500))
+        window.blit(playButtonText, (350, 300))                         # display PLAY
+        window.blit(settingsButtonText, (315, 400))                     # display SETTINGS
+        window.blit(quitButtonText, (350, 500))                         # display QUIT
         pygame.display.update()
 
-        if cursor[0] >= 750 and cursor[1] <= 50 and clicked[0]:                 # Click top right to close (temporaly)
-            pygame.quit()
-
         # PLAY BUTTON
-        if 300 <= cursor[1] <= 300+50:                                          # Cursor on PLAY BUTTON level
+        if 300 <= cursor[1] <= 300+50:                                  # Cursor on PLAY BUTTON level
+            playOnHover = mainmenufont.render('PLAY', True, green)
             pygame.draw.rect(window, lightGray, [0, 300, 800, 40])
-            window.blit(playButtonText, (350, 300))
+            window.blit(playOnHover, (350, 300))
             pygame.display.update()
             clock.tick(60)
+            
 
         # SETTINGS
-        elif 400 <= cursor[1] <= 400+50:                                          # Cursor on SETTINGS BUTTON level
+        elif 400 <= cursor[1] <= 400+50:                                # Cursor on SETTINGS BUTTON level
+            settingsOnHover = mainmenufont.render('SETTINGS', True, green)
             pygame.draw.rect(window, lightGray, [0, 400, 800, 40])
-            window.blit(settingsButtonText, (315, 400))
+            window.blit(settingsOnHover, (315, 400))
             pygame.display.update()
             clock.tick(60)
 
         # QUIT
-        elif 400 <= cursor[1] <= 500+50:                                          # Cursor on SETTINGS BUTTON level
+        elif 400 <= cursor[1] <= 500+50:                                # Cursor on SETTINGS BUTTON level
+            quitOnHover = mainmenufont.render('QUIT', True, green)
             pygame.draw.rect(window, lightGray, [0, 500, 800, 40])
-            window.blit(quitButtonText, (350, 500))
+            window.blit(quitOnHover, (350, 500))
             pygame.display.update()
             clock.tick(60)
+            
             if clicked[0] == 1:
                 pygame.quit()
 
