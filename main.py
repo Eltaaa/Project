@@ -1,9 +1,7 @@
 import pygame
-<<<<<<< HEAD
 from pygame import mixer
-=======
 import time
->>>>>>> 1525555cc07514739df17649bae4b5f9957a2625
+
 # ----------
 # DISPLAY SETUP
 # ----------
@@ -95,14 +93,9 @@ def startscreen():
             window.blit(playOnHover, (350, 300))
             pygame.display.update()
             clock.tick(60)
-<<<<<<< HEAD
             if clicked[0] == 1:
                 sound = mixer.Sound('Click.wav') # Click sound
-                sound.play()
-
-=======
-            
->>>>>>> 1525555cc07514739df17649bae4b5f9957a2625
+                sound.play() 
 
         # SETTINGS
         elif 400 <= cursor[1] <= 400+50:                                # Cursor on SETTINGS BUTTON level
