@@ -1,14 +1,21 @@
 import pygame
-
+from pygame import mixer
 # ----------
 # DISPLAY SETUP
 # ----------
+'''
+เหมือนเวลา push งานลง git แล้วคนรับงานไปจะมีปัญหาเวลาโปรแกรมเปิดไฟล์รูป เสียง ต่างๆ ที่ลากเข้ามาอะ
+นนลองย้ายๆไฟล์เสียงกับภาพเราให้อยู่ใน path ที่นนเปิดได้ละกัน
+เราเปลี่ยน path ของ Icon กับ title ด้วยอะถ้าเปิดไม่ได้ย้าย 2 ตัวนี้ด้วยนะ
+'''
+
 pygame.init()
 width, height = 800, 600
 window = pygame.display.set_mode((width, height))
-icon = pygame.image.load('Asset\\Icon.jpg')
+icon = pygame.image.load('Icon.jpg')
 pygame.display.set_icon(icon)
 pygame.display.set_caption('Word Game')
+background = pygame.image.load('Backgroundimg.png')
 
 # ----------,
 # CLOCK
@@ -33,9 +40,11 @@ mainmenufont = pygame.font.SysFont("Comic Sans MS", 25)
 # ----------
 # IMAGE LOAD
 # ----------
-gametitle = pygame.image.load(
-    'Asset\\title.png')
+gametitle = pygame.image.load('title.png')
 
+# Background music
+mixer.music.load('backgroundsound.wav')
+mixer.music.play(-1)
 
 # MAIN MENU
 
@@ -46,7 +55,7 @@ def startscreen():
     clock.tick(60)
     OnStartScreen = True
 
-    window.fill(black)
+    window.blit(background, (0, 0))
     pygame.display.update()
     clock.tick(60)
 
@@ -55,7 +64,7 @@ def startscreen():
     clock.tick(60)
 
     while OnStartScreen:
-        window.fill(black)
+        window.blit(background, (0, 0))
         window.blit(gametitle, [100, 100])
 
         # will crash if not continuously call event, serve as place holder
@@ -83,6 +92,10 @@ def startscreen():
             window.blit(playButtonText, (350, 300))
             pygame.display.update()
             clock.tick(60)
+            if clicked[0] == 1:
+                sound = mixer.Sound('Click.wav') # Click sound
+                sound.play()
+
 
         # SETTINGS
         elif 400 <= cursor[1] <= 400+50:                                          # Cursor on SETTINGS BUTTON level
@@ -90,6 +103,9 @@ def startscreen():
             window.blit(settingsButtonText, (315, 400))
             pygame.display.update()
             clock.tick(60)
+            if clicked[0] == 1:
+                sound = mixer.Sound('Click.wav') # Click sound
+                sound.play()
 
         # QUIT
         elif 400 <= cursor[1] <= 500+50:                                          # Cursor on SETTINGS BUTTON level
@@ -98,7 +114,10 @@ def startscreen():
             pygame.display.update()
             clock.tick(60)
             if clicked[0] == 1:
+                sound = mixer.Sound('Click.wav') # Click sound
+                sound.play()
                 pygame.quit()
+                quit()
 
 # MAIN GAME
 
