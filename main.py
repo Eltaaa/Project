@@ -44,6 +44,7 @@ gametitle = pygame.image.load('Asset\\title.png')
 # SOUND
 # ----------
 titleBGM = mixer.music.load('Asset\\backgroundsound.wav')
+pygame.mixer.music.set_volume(0.01)
 clicknoise = mixer.Sound('Asset\\Click.wav')
 
 
