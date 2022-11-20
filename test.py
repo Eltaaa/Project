@@ -19,6 +19,7 @@ background = pygame.image.load('Asset\\Backgroundimg.png')
 # CLOCK
 # ----------
 clock = pygame.time.Clock()
+fps = 60
 
 # ----------
 # COLORS
@@ -40,12 +41,8 @@ mainmenufont = pygame.font.SysFont("Comic Sans MS", 25)
 # ----------
 gametitle = pygame.image.load('Asset\\title.png')
 
-# ----------
-# SOUND
-# ----------
+# Background music
 titleBGM = mixer.music.load('Asset\\backgroundsound.wav')
-pygame.mixer.music.set_volume(0.01)
-clicknoise = mixer.Sound('Asset\\Click.wav')
 
 
 # MAIN MENU
@@ -70,7 +67,8 @@ def startscreen():
         window.blit(background, (0, 0))
         window.blit(gametitle, [100, 100])
 
-        pygame.event.get()                                               # will crash if not continuously call event, serve as place holder
+        # will crash if not continuously call event, serve as place holder
+        pygame.event.get()
 
         cursor = pygame.mouse.get_pos()
         clicked = pygame.mouse.get_pressed()
@@ -85,38 +83,40 @@ def startscreen():
         window.blit(quitButtonText, (350, 500))                         # display QUIT
         pygame.display.update()
 
+        
         # PLAY BUTTON
-        if 300 <= cursor[1] <= 300+50 and 330 <= cursor[0] <= 430:      # Cursor on PLAY BUTTON level
+        if 300 <= cursor[1] <= 300+50:                                  # Cursor on PLAY BUTTON level
             playOnHover = mainmenufont.render('PLAY', True, green)
+            pygame.draw.rect(window, lightGray, [0, 300, 800, 40])
             window.blit(playOnHover, (350, 300))
             pygame.display.update()
             clock.tick(60)
-
             if clicked[0] == 1:
-                clicknoise.play()
+                sound = mixer.Sound('Asset\\Click.wav') # Click sound
+                sound.play() 
 
         # SETTINGS
         elif 400 <= cursor[1] <= 400+50:                                # Cursor on SETTINGS BUTTON level
             settingsOnHover = mainmenufont.render('SETTINGS', True, green)
-
+            pygame.draw.rect(window, lightGray, [0, 400, 800, 40])
             window.blit(settingsOnHover, (315, 400))
             pygame.display.update()
             clock.tick(60)
-
             if clicked[0] == 1:
-                clicknoise.play()
+                sound = mixer.Sound('Asset\\Click.wav') # Click sound
+                sound.play()
 
         # QUIT
         elif 400 <= cursor[1] <= 500+50:                                # Cursor on SETTINGS BUTTON level
             quitOnHover = mainmenufont.render('QUIT', True, green)
-
+            pygame.draw.rect(window, lightGray, [0, 500, 800, 40])
             window.blit(quitOnHover, (350, 500))
             pygame.display.update()
             clock.tick(60)
-
+            
             if clicked[0] == 1:
-                clicknoise.play()
-                time.sleep(0.55)
+                sound = mixer.Sound('Asset\\Click.wav') # Click sound
+                sound.play()
                 pygame.quit()
                 quit()
 
@@ -125,7 +125,7 @@ def startscreen():
 
 def main():
     ''' main function that run the game'''
-    startscreen()                                                       # Game Start
+    startscreen()                               # Game Start
 
     run = True
     while run:
