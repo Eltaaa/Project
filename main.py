@@ -46,6 +46,7 @@ gametitle = pygame.image.load('Asset\\title.png')
 titleBGM = mixer.music.load('Asset\\backgroundsound.wav')
 pygame.mixer.music.set_volume(0.01)
 clicknoise = mixer.Sound('Asset\\Click.wav')
+pygame.mixer.Sound.set_volume(clicknoise, 0.01)
 
 
 # MAIN MENU
@@ -116,7 +117,7 @@ def startscreen():
 
             if clicked[0] == 1:
                 clicknoise.play()
-                time.sleep(0.55)
+                time.sleep(0.6)
                 pygame.quit()
                 quit()
 
