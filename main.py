@@ -52,14 +52,8 @@ heart = pygame.image.load("heart.jpg")
 # ----------
 # SOUND
 # ----------
-
 #pygame.mixer.music.set_volume(0.01)
 clicknoise = mixer.Sound('Click.wav')
-titleBGM = mixer.music.load('Asset\\backgroundsound.wav')
-pygame.mixer.music.set_volume(0.01)
-clicknoise = mixer.Sound('Asset\\Click.wav')
-pygame.mixer.Sound.set_volume(clicknoise, 0.01)
-
 
 # Word list
 lst1 = ["apple","banana","guava","watermelon","grape","mango","lichi","strawberry","pear","kiwi"]
@@ -131,7 +125,6 @@ def startscreen():
     window.blit(gametitle, [100, 100])
     pygame.display.update()
     clock.tick(60)
-
     while OnStartScreen:
         window.blit(background, (0, 0))
         window.blit(gametitle, [100, 100])
@@ -178,13 +171,14 @@ def startscreen():
         # QUIT
         elif 400 <= cursor[1] <= 500+50 and 345 <= cursor[0] <= 420:                                # Cursor on SETTINGS BUTTON level
             quitOnHover = mainmenufont.render('QUIT', True, green)
+
             window.blit(quitOnHover, (350, 500))
             pygame.display.update()
             clock.tick(60)
 
             if clicked[0] == 1:
                 clicknoise.play()
-                time.sleep(0.6)
+                time.sleep(0.55)
                 pygame.quit()
                 quit()
 
@@ -265,7 +259,6 @@ def main():
         pygame.display.update()
 
 def gameover():
-    over = True
     gameoversound = mixer.music.load('GameOver.wav')
     mixer.music.play(-1)
     window.fill(black)
@@ -278,9 +271,10 @@ def gameover():
         pygame.event.get()
         cursor = pygame.mouse.get_pos()                                              
         clicked = pygame.mouse.get_pressed()
-        if (0 <= cursor[1] <= 600 and 0 <= cursor[0] <= 800) and not(300 <= cursor[1] <= 300+50 and 330 <= cursor[0] <= 430): # Return to main menu and prevent double click at play button
+        if (0 <= cursor[1] <= 600 and 0 <= cursor[0] <= 800) and not(300 <= cursor[1] <= 300+50 and 330 <= cursor[0] <= 430)\
+            and not(400 <= cursor[1] <= 500+50 and 345 <= cursor[0] <= 420)\
+            and not(400 <= cursor[1] <= 400+50 and 310 <= cursor[0] <= 450): # Return to main menu and prevent double click at play setting and quit button
             if clicked[0] == 1:
                 main()
 if __name__ == '__main__':
     main()
-
