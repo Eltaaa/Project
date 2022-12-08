@@ -42,6 +42,7 @@ wordtype = pygame.font.SysFont("Calibri", 50)
 wordover = pygame.font.SysFont("Calibri", 100)
 wordwin = pygame.font.SysFont("Calibri", 75)
 clicktocon = pygame.font.SysFont("Comic Sans MS", 25)
+answerfont = pygame.font.SysFont("Juice ITC", 35)
 # ----------
 # IMAGE LOAD
 # ----------
@@ -53,14 +54,14 @@ heart = pygame.image.load("heart.jpg")
 # ----------
 # SOUND
 # ----------
-#pygame.mixer.music.set_volume(0.01)
 clicknoise = mixer.Sound('Click.wav')
 
 # Word list
-lst1 = ['apple']
-#lst1 = ["apple","banana","guava","watermelon","grape","mango","lichi","strawberry","pear","kiwi"]
-#lst2 = ["rose","jasmine","lavender","daisy","marigold","lily","sunflower","lotus"]
-#lst3 = ["buffalo","tiger","giraffe","elephant","kangaroo","koala","chimpanzee","squirrel"]
+lst1 = ["apple","banana","guava","watermelon","grape","mango","lichi","strawberry","pear","kiwi"]
+lst2 = ["rose","jasmine","lavender","daisy","marigold","lily","sunflower","lotus"]
+lst3 = ["buffalo","tiger","giraffe","elephant","kangaroo","koala","chimpanzee","squirrel"]
+lst4 = ["eagle","nightingale","ostrich","sparrow","vulture","dove","peacock","pigeon","swan"]
+lst5 = ["butterfly","centipede","grasshopper","honeybee","wasp","earthworm","termite","spider","leech","locust","mosquito"]
 global alllist
 alllist = lst1
 
@@ -70,10 +71,15 @@ def chooseword(randomwords):
         word = random.choice(alllist)
         if word in lst1:
             hint = 'Fruit'
-        #elif word in lst2:
-        #    hint = 'Flower'
-        #elif word in lst3:
-            hint = 'Animals'
+        elif word in lst2:
+            hint = 'Flower'
+        elif word in lst3:
+            hint = 'Animal'
+        elif word in lst4:
+            hint = 'Bird'
+        elif word in lst5:
+            hint = 'Insect'
+        
         
         if word in randomwords:
             continue
@@ -114,7 +120,7 @@ def typechar(char):
 
 # Transition
 def transition():
-    pygame.mixer.music.set_volume(0.5) # Fade sound while using transition
+    pygame.mixer.music.set_volume(0.3) # Fade sound while using transition
     for i in range(0,610,10):
         pygame.draw.rect(window, black, [0,600-(i),800,50+(i)])
         pygame.display.update()
@@ -135,7 +141,7 @@ def transitionend():
         clock.tick(50)
 
     end = wordguessfont.render("THIS IS THE END...", True, white)             #This displayes level's name
-    window.blit(end, [225,250])                                         #Loop above and below for animation
+    window.blit(end, [170,250])                                         #Loop above and below for animation
     pygame.display.update()
     time.sleep(1)
     pygame.mixer.music.set_volume(1) # Set volume to default after transition
@@ -154,6 +160,13 @@ def transitionwin():
     time.sleep(1)
     pygame.mixer.music.set_volume(1) # Set volume to default after transition
     clock.tick(1)
+
+# Display correct answer
+def printanswer(word):
+    msgAnswer = answerfont.render("The correct answer is: "+word[0], True, white)
+    window.blit(msgAnswer, [220,0])
+    pygame.display.update()
+    time.sleep(2)
 
 # MAIN MENU
 def startscreen():
@@ -259,13 +272,12 @@ def main():
                 if event.key == pygame.K_RETURN:
                     if len(string) == 2:                #If there is only one letter, it is added into letters (\n is also counted)
                         letters.extend(string[0])
-                    string = ""
-                    chances -= 1                    #Every time enter is pressed, string is reseted
+                    string = ""                     #Every time enter is pressed, string is reseted
+                    chances -= 1   
                     if chances == 0:
                         transitionend()             # Use transition
-                        gameover(score)             # Call game over screen
+                        gameover(score, word)             # Call game over screen
                         break                                            
-
 
                 if event.key == pygame.K_BACKSPACE:
                     if string[-1] != chr(8):            #When Backspace is pressed
@@ -285,7 +297,7 @@ def main():
             score += 100
             if len(randomwords) != len(alllist):
                 word = chooseword(randomwords)
-            else:
+            elif len(randomwords) == len(alllist):
                 transitionwin()
                 gamewin(score)                         # Call win screen
             Total += 1
@@ -308,14 +320,18 @@ def main():
         typechar(string)   
         pygame.display.update()
 
-def gameover(score):
+# Game Over screen
+
+def gameover(score, word):
     gameoversound = mixer.music.load('GameOver.wav')
     mixer.music.play(-1)
     window.fill(black)
     itover = wordover.render('GAME OVER', True, white)
     continu = clicktocon.render('Click anywhere to return to continue...', True, white)
-    finalscore = hintfont.render('Your score :'+str(score), True, white )
-    window.blit(finalscore, (50, 50))
+    finalscore = hintfont.render('Your score : '+str(score), True, white )
+    answer = hintfont.render('Answer is '+word[0], True, white)
+    window.blit(answer, (48,85))
+    window.blit(finalscore, (50, 35))
     window.blit(itover, (155, 200))
     window.blit(continu, (180, 500))
     pygame.display.update()
@@ -327,15 +343,17 @@ def gameover(score):
             if clicked[0] == 1:
                 main()
 
+# Game winning screen
+
 def gamewin(score):
     gamewinsound = mixer.music.load('winsong.wav')
     mixer.music.play(-1)
     window.fill(black)
     itover = wordwin.render('CONGRATULATION !!!', True, white)
     continu = clicktocon.render('Click anywhere to return to continue...', True, white)
-    finalscore = hintfont.render('Your score :'+str(score), True, white )
+    finalscore = hintfont.render('Your score : '+str(score), True, white )
     window.blit(finalscore, (50, 50))
-    window.blit(itover, (100, 200))
+    window.blit(itover, (85, 200))
     window.blit(continu, (180, 500))
     pygame.display.update()
     while True:
