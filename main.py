@@ -51,6 +51,8 @@ scorebutton = pygame.image.load("score.png")
 wordframe = pygame.image.load("backframe.jpg")
 inputtext = pygame.image.load("input.png")
 heart = pygame.image.load("heart.jpg")
+gameoverbg = pygame.image.load('gameoverbg.jpg')
+wingamebg = pygame.image.load('wingamebg4.jpg')
 # ----------
 # SOUND
 # ----------
@@ -63,7 +65,7 @@ lst3 = ["buffalo","tiger","giraffe","elephant","kangaroo","koala","chimpanzee","
 lst4 = ["eagle","nightingale","ostrich","sparrow","vulture","dove","peacock","pigeon","swan"]
 lst5 = ["butterfly","centipede","grasshopper","honeybee","wasp","earthworm","termite","spider","leech","locust","mosquito"]
 global alllist
-alllist = lst1
+alllist = lst1+lst2+lst3+lst4+lst5
 
 # Choose word
 def chooseword(randomwords):
@@ -126,8 +128,8 @@ def transition():
         pygame.display.update()
         clock.tick(50)
 
-    start = wordguessfont.render("GAME START", True, white)             #This displayes level's name
-    window.blit(start, [225,250])                                         #Loop above and below for animation
+    start = wordguessfont.render("GAME START", True, white)             
+    window.blit(start, [225,250])                                         
     pygame.display.update()
     time.sleep(1)
     pygame.mixer.music.set_volume(1) # Set volume to default after transition
@@ -140,11 +142,11 @@ def transitionend():
         pygame.display.update()
         clock.tick(50)
 
-    end = wordguessfont.render("THIS IS THE END...", True, white)             #This displayes level's name
-    window.blit(end, [170,250])                                         #Loop above and below for animation
+    end = wordguessfont.render("THIS IS THE END...", True, white)             
+    window.blit(end, [170,250])                                         
     pygame.display.update()
-    time.sleep(1)
-    pygame.mixer.music.set_volume(1) # Set volume to default after transition
+    time.sleep(2)
+    
     clock.tick(1)
 
 def transitionwin():
@@ -154,11 +156,10 @@ def transitionwin():
         pygame.display.update()
         clock.tick(50)
 
-    win = wordguessfont.render("YOU MADE IT", True, white)             #This displayes level's name
-    window.blit(win, [225,250])                                         #Loop above and below for animation
+    win = wordguessfont.render("YOU MADE IT", True, white)             
+    window.blit(win, [225,250])                                         
     pygame.display.update()
-    time.sleep(1)
-    pygame.mixer.music.set_volume(1) # Set volume to default after transition
+    time.sleep(2)
     clock.tick(1)
 
 # Display correct answer
@@ -188,7 +189,7 @@ def startscreen():
         window.blit(background, (0, 0))
         window.blit(gametitle, [100, 100])
 
-        pygame.event.get()                                               # will crash if not continuously call event, serve as place holder
+        pygame.event.get()                                              # will crash if not continuously call event, serve as place holder
 
         cursor = pygame.mouse.get_pos()
         clicked = pygame.mouse.get_pressed()
@@ -276,6 +277,7 @@ def main():
                     chances -= 1   
                     if chances == 0:
                         transitionend()             # Use transition
+                        time.sleep(1)
                         gameover(score, word)             # Call game over screen
                         break                                            
 
@@ -299,6 +301,7 @@ def main():
                 word = chooseword(randomwords)
             elif len(randomwords) == len(alllist):
                 transitionwin()
+                time.sleep(1)
                 gamewin(score)                         # Call win screen
             Total += 1
             string = ""
@@ -323,9 +326,10 @@ def main():
 # Game Over screen
 
 def gameover(score, word):
+    pygame.mixer.music.set_volume(1) # Set volume to default after transition
     gameoversound = mixer.music.load('GameOver.wav')
     mixer.music.play(-1)
-    window.fill(black)
+    window.blit(gameoverbg, [0, 0])
     itover = wordover.render('GAME OVER', True, white)
     continu = clicktocon.render('Click anywhere to return to continue...', True, white)
     finalscore = hintfont.render('Your score : '+str(score), True, white )
@@ -346,15 +350,16 @@ def gameover(score, word):
 # Game winning screen
 
 def gamewin(score):
+    pygame.mixer.music.set_volume(1) # Set volume to default after transition
     gamewinsound = mixer.music.load('winsong.wav')
     mixer.music.play(-1)
-    window.fill(black)
+    window.blit(wingamebg, [0, 0])
     itover = wordwin.render('CONGRATULATION !!!', True, white)
     continu = clicktocon.render('Click anywhere to return to continue...', True, white)
     finalscore = hintfont.render('Your score : '+str(score), True, white )
     window.blit(finalscore, (50, 50))
     window.blit(itover, (85, 200))
-    window.blit(continu, (180, 500))
+    window.blit(continu, (180, 300))
     pygame.display.update()
     while True:
         pygame.event.get()
