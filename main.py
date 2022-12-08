@@ -258,13 +258,14 @@ def main():
         typechar(string)   
         pygame.display.update()
 
+# Display GameOver screen
 def gameover():
     gameoversound = mixer.music.load('GameOver.wav')
     mixer.music.play(-1)
     window.fill(black)
     itover = wordover.render('GAME OVER', True, white)
     continu = clicktocon.render('Click anywhere to return to continue...', True, white)
-    window.blit(itover, (155, 200))
+    window.blit(itover, (150, 175))
     window.blit(continu, (180, 500))
     pygame.display.update()
     while True:
