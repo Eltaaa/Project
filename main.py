@@ -40,6 +40,7 @@ hintfont = pygame.font.SysFont("Comic Sans MS", 25)
 scorefont = pygame.font.SysFont("Comic Sans MS", 25)
 wordtype = pygame.font.SysFont("Calibri", 50)
 wordover = pygame.font.SysFont("Calibri", 100)
+wordwin = pygame.font.SysFont("Calibri", 75)
 clicktocon = pygame.font.SysFont("Comic Sans MS", 25)
 # ----------
 # IMAGE LOAD
@@ -49,7 +50,6 @@ scorebutton = pygame.image.load("score.png")
 wordframe = pygame.image.load("backframe.jpg")
 inputtext = pygame.image.load("input.png")
 heart = pygame.image.load("heart.jpg")
-
 # ----------
 # SOUND
 # ----------
@@ -57,11 +57,12 @@ heart = pygame.image.load("heart.jpg")
 clicknoise = mixer.Sound('Click.wav')
 
 # Word list
-lst1 = ["apple","banana","guava","watermelon","grape","mango","lichi","strawberry","pear","kiwi"]
-lst2 = ["rose","jasmine","lavender","daisy","marigold","lily","sunflower","lotus"]
-lst3 = ["buffalo","tiger","giraffe","elephant","kangaroo","koala","chimpanzee","squirrel"]
+lst1 = ['apple']
+#lst1 = ["apple","banana","guava","watermelon","grape","mango","lichi","strawberry","pear","kiwi"]
+#lst2 = ["rose","jasmine","lavender","daisy","marigold","lily","sunflower","lotus"]
+#lst3 = ["buffalo","tiger","giraffe","elephant","kangaroo","koala","chimpanzee","squirrel"]
 global alllist
-alllist = lst1+lst2+lst3
+alllist = lst1
 
 # Choose word
 def chooseword(randomwords):
@@ -69,9 +70,9 @@ def chooseword(randomwords):
         word = random.choice(alllist)
         if word in lst1:
             hint = 'Fruit'
-        elif word in lst2:
-            hint = 'Flower'
-        elif word in lst3:
+        #elif word in lst2:
+        #    hint = 'Flower'
+        #elif word in lst3:
             hint = 'Animals'
         
         if word in randomwords:
@@ -111,6 +112,49 @@ def typechar(char):
     window.blit(typechar, [50,395])
     pygame.display.update()
 
+# Transition
+def transition():
+    pygame.mixer.music.set_volume(0.5) # Fade sound while using transition
+    for i in range(0,610,10):
+        pygame.draw.rect(window, black, [0,600-(i),800,50+(i)])
+        pygame.display.update()
+        clock.tick(50)
+
+    start = wordguessfont.render("GAME START", True, white)             #This displayes level's name
+    window.blit(start, [225,250])                                         #Loop above and below for animation
+    pygame.display.update()
+    time.sleep(1)
+    pygame.mixer.music.set_volume(1) # Set volume to default after transition
+    clock.tick(1)
+
+def transitionend():
+    pygame.mixer.music.set_volume(0.1) # Fade sound while using transition
+    for i in range(0,610,10):
+        pygame.draw.rect(window, black, [0,600-(i),800,50+(i)])
+        pygame.display.update()
+        clock.tick(50)
+
+    end = wordguessfont.render("THIS IS THE END...", True, white)             #This displayes level's name
+    window.blit(end, [225,250])                                         #Loop above and below for animation
+    pygame.display.update()
+    time.sleep(1)
+    pygame.mixer.music.set_volume(1) # Set volume to default after transition
+    clock.tick(1)
+
+def transitionwin():
+    pygame.mixer.music.set_volume(0.1) # Fade sound while using transition
+    for i in range(0,610,10):
+        pygame.draw.rect(window, black, [0,600-(i),800,50+(i)])
+        pygame.display.update()
+        clock.tick(50)
+
+    win = wordguessfont.render("YOU MADE IT", True, white)             #This displayes level's name
+    window.blit(win, [225,250])                                         #Loop above and below for animation
+    pygame.display.update()
+    time.sleep(1)
+    pygame.mixer.music.set_volume(1) # Set volume to default after transition
+    clock.tick(1)
+
 # MAIN MENU
 def startscreen():
     ''' start game main menu'''
@@ -126,6 +170,7 @@ def startscreen():
     window.blit(gametitle, [100, 100])
     pygame.display.update()
     clock.tick(60)
+
     while OnStartScreen:
         window.blit(background, (0, 0))
         window.blit(gametitle, [100, 100])
@@ -154,7 +199,7 @@ def startscreen():
 
             if clicked[0] == 1:
                 clicknoise.play()
-                window.fill(black)
+                transition()
                 pygame.display.update()
                 break
 
@@ -184,19 +229,16 @@ def startscreen():
                 quit()
 
 # MAIN GAME
-
-
 def main():
     ''' main function that run the game'''
     startscreen()  
     BGMwhenplay = mixer.music.load('PlayBGM.wav')
     mixer.music.play(-1) 
     string = ""         #The answer of user is stored in "string"
-    letters = []        #Letters guessed by user
+    letters = []      #Letters guessed by user
     chances = 5         #Chances per match
     score = 0           #Score
 
-    correctanswers = 0.0    #Correct Answers
     Total = 0.0             #Total words
 
     randomwords = []        #Words already displayed
@@ -220,9 +262,10 @@ def main():
                     string = ""
                     chances -= 1                    #Every time enter is pressed, string is reseted
                     if chances == 0:
-                        gameover()
+                        transitionend()             # Use transition
+                        gameover(score)             # Call game over screen
                         break                                            
-    
+
 
                 if event.key == pygame.K_BACKSPACE:
                     if string[-1] != chr(8):            #When Backspace is pressed
@@ -240,16 +283,22 @@ def main():
             typechar(string)
             pygame.display.update()
             score += 100
-            word = chooseword(randomwords)
+            if len(randomwords) != len(alllist):
+                word = chooseword(randomwords)
+            else:
+                transitionwin()
+                gamewin(score)                         # Call win screen
             Total += 1
             string = ""
             letters = []
+        
 
 
         window.fill(black)                     #Back color to background
         window.blit(scorebutton, [0,0])
-        window.blit(wordframe, [0,165])        #Displaying the background for the to be guessed word
-        displayword(word[0],letters)           #Displaying the to be guessed word
+        displayscore(score)                    #Display score
+        window.blit(wordframe, [0,165])        #Display the background for the to be guessed word
+        displayword(word[0],letters)           #DisplayC the to be guessed word
         displayhint(word[1])  
         window.blit(inputtext, [0,370])        #Displaying the input
 
@@ -259,24 +308,44 @@ def main():
         typechar(string)   
         pygame.display.update()
 
-# Display GameOver screen
-def gameover():
+def gameover(score):
     gameoversound = mixer.music.load('GameOver.wav')
     mixer.music.play(-1)
     window.fill(black)
     itover = wordover.render('GAME OVER', True, white)
     continu = clicktocon.render('Click anywhere to return to continue...', True, white)
-    window.blit(itover, (150, 175))
+    finalscore = hintfont.render('Your score :'+str(score), True, white )
+    window.blit(finalscore, (50, 50))
+    window.blit(itover, (155, 200))
     window.blit(continu, (180, 500))
     pygame.display.update()
     while True:
         pygame.event.get()
         cursor = pygame.mouse.get_pos()                                              
         clicked = pygame.mouse.get_pressed()
-        if (0 <= cursor[1] <= 600 and 0 <= cursor[0] <= 800) and not(300 <= cursor[1] <= 300+50 and 330 <= cursor[0] <= 430)\
-            and not(400 <= cursor[1] <= 500+50 and 345 <= cursor[0] <= 420)\
-            and not(400 <= cursor[1] <= 400+50 and 310 <= cursor[0] <= 450): # Return to main menu and prevent double click at play setting and quit button
+        if (0 <= cursor[1] <= 600 and 0 <= cursor[0] <= 800) and not(300 <= cursor[1] <= 300+50 and 330 <= cursor[0] <= 430): # Return to main menu and prevent double click at play button
             if clicked[0] == 1:
                 main()
+
+def gamewin(score):
+    gamewinsound = mixer.music.load('winsong.wav')
+    mixer.music.play(-1)
+    window.fill(black)
+    itover = wordwin.render('CONGRATULATION !!!', True, white)
+    continu = clicktocon.render('Click anywhere to return to continue...', True, white)
+    finalscore = hintfont.render('Your score :'+str(score), True, white )
+    window.blit(finalscore, (50, 50))
+    window.blit(itover, (100, 200))
+    window.blit(continu, (180, 500))
+    pygame.display.update()
+    while True:
+        pygame.event.get()
+        cursor = pygame.mouse.get_pos()                                              
+        clicked = pygame.mouse.get_pressed()
+        if (0 <= cursor[1] <= 600 and 0 <= cursor[0] <= 800) and not(300 <= cursor[1] <= 300+50 and 330 <= cursor[0] <= 430): # Return to main menu and prevent double click at play button
+            if clicked[0] == 1:
+                main()
+
 if __name__ == '__main__':
     main()
+
