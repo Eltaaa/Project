@@ -193,7 +193,7 @@ def main():
     mixer.music.play(-1) 
     string = ""         #The answer of user is stored in "string"
     letters = []        #Letters guessed by user
-    chances = 5         #Chances per word
+    chances = 5         #Chances per match
     score = 0           #Score
 
     correctanswers = 0.0    #Correct Answers
