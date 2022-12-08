@@ -52,8 +52,15 @@ heart = pygame.image.load("heart.jpg")
 # ----------
 # SOUND
 # ----------
+<<<<<<< HEAD
 #pygame.mixer.music.set_volume(0.01)
 clicknoise = mixer.Sound('Click.wav')
+=======
+titleBGM = mixer.music.load('Asset\\backgroundsound.wav')
+pygame.mixer.music.set_volume(0.01)
+clicknoise = mixer.Sound('Asset\\Click.wav')
+pygame.mixer.Sound.set_volume(clicknoise, 0.01)
+>>>>>>> c4368c02df7890f596d7888609a67520ea6e8094
 
 # Word list
 lst1 = ["apple","banana","guava","watermelon","grape","mango","lichi","strawberry","pear","kiwi"]
@@ -172,14 +179,13 @@ def startscreen():
         # QUIT
         elif 400 <= cursor[1] <= 500+50 and 345 <= cursor[0] <= 420:                                # Cursor on SETTINGS BUTTON level
             quitOnHover = mainmenufont.render('QUIT', True, green)
-
             window.blit(quitOnHover, (350, 500))
             pygame.display.update()
             clock.tick(60)
 
             if clicked[0] == 1:
                 clicknoise.play()
-                time.sleep(0.55)
+                time.sleep(0.6)
                 pygame.quit()
                 quit()
 
