@@ -49,6 +49,7 @@ scorebutton = pygame.image.load("score.png")
 wordframe = pygame.image.load("backframe.jpg")
 inputtext = pygame.image.load("input.png")
 heart = pygame.image.load("heart.jpg")
+
 # ----------
 # SOUND
 # ----------
