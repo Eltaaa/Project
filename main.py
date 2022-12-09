@@ -59,11 +59,11 @@ wingamebg = pygame.image.load('wingamebg4.jpg')
 clicknoise = mixer.Sound('Click.wav')
 
 # Word list
-lst1 = ["apple","banana","guava","watermelon","grape","mango","lichi","strawberry","pear","kiwi"]
-lst2 = ["rose","jasmine","lavender","daisy","marigold","lily","sunflower","lotus"]
-lst3 = ["buffalo","tiger","giraffe","elephant","kangaroo","koala","chimpanzee","squirrel"]
-lst4 = ["eagle","nightingale","ostrich","sparrow","vulture","dove","peacock","pigeon","swan"]
-lst5 = ["butterfly","centipede","grasshopper","honeybee","wasp","earthworm","termite","spider","leech","locust","mosquito"]
+lst1 = ["apple", "banana", "guava", "watermelon", "grape", "mango", "lichi", "strawberry", "pear", "kiwi"]
+lst2 = ["rose", "jasmine", "lavender", "daisy", "marigold", "lily", "sunflower", "lotus"]
+lst3 = ["buffalo", "tiger", "giraffe", "elephant", "kangaroo", "koala", "chimpanzee", "squirrel"]
+lst4 = ["eagle", "nightingale", "ostrich", "sparrow", "vulture", "dove", "peacock", "pigeon", "swan"]
+lst5 = ["butterfly", "centipede", "grasshopper", "honeybee", "wasp", "earthworm", "termite", "spider", "leech", "locust", "mosquito"]
 global alllist
 alllist = lst1+lst2+lst3+lst4+lst5
 
@@ -83,7 +83,7 @@ def chooseword(randomwords):
             hint = 'Insect'
         
         
-        if word in randomwords:
+        if word in randomwords: # append to check win or lose
             continue
         else:
             break
@@ -274,7 +274,7 @@ def main():
                     if len(string) == 2:                #If there is only one letter, it is added into letters (\n is also counted)
                         letters.extend(string[0])
                     string = ""                     #Every time enter is pressed, string is reseted
-                    chances -= 1   
+                    chances -= 1
                     if chances == 0:
                         transitionend()             # Use transition
                         time.sleep(1)
