@@ -11,10 +11,10 @@ import random
 pygame.init()
 width, height = 800, 600
 window = pygame.display.set_mode((width, height))
-icon = pygame.image.load('Icon.jpg')
+icon = pygame.image.load('Asset\\Icon.jpg')
 pygame.display.set_icon(icon)
 pygame.display.set_caption('Word Game')
-background = pygame.image.load('backgroundv2.jpg')
+background = pygame.image.load('Asset\\background.png')
 
 # ----------,
 # CLOCK
@@ -48,17 +48,17 @@ rulefont = pygame.font.SysFont("Comic Sans MS", 20)
 # ----------
 # IMAGE LOAD
 # ----------
-gametitle = pygame.image.load('title.png')
-scorebutton = pygame.image.load("score.png")
-wordframe = pygame.image.load("backframe.jpg")
-inputtext = pygame.image.load("input.png")
-heart = pygame.image.load("heart.jpg")
-gameoverbg = pygame.image.load('gameoverbg.jpg')
-wingamebg = pygame.image.load('wingamebg4.jpg')
+gametitle = pygame.image.load('Asset\\title.png')
+scorebutton = pygame.image.load("Asset\\score.png")
+wordframe = pygame.image.load("Asset\\backframe.png")
+inputtext = pygame.image.load("Asset\\input.png")
+heart = pygame.image.load("Asset\\heart.png")
+gameoverbg = pygame.image.load('Asset\\gameoverbg.jpg')
+gamebg = pygame.image.load('Asset\\playbg.png')
 # ----------
 # SOUND
 # ----------
-clicknoise = mixer.Sound('Click.wav')
+clicknoise = mixer.Sound('Asset\\Click.wav')
 
 # Word list
 lst1 = ["apple", "banana", "guava", "watermelon", "grape", "mango", "lichi", "strawberry", "pear", "kiwi"]
@@ -104,22 +104,22 @@ def displayword(word, letters):
             hiddenword += " ? "
 
     wordText = wordguessfont.render(hiddenword, True, yellow)
-    window.blit(wordText, [20,200])
+    window.blit(wordText, [20,230])
 
 # Display hint
 def displayhint(hint):
-    hintText = hintfont.render("Hint: "+hint, True, blue)
-    window.blit(hintText, [50,300])
+    hintText = hintfont.render("Hint: "+hint, True, white)
+    window.blit(hintText, [33,300])
 
 # Display score
 def displayscore(score):
-    scoreText = scorefont.render("Score: "+str(score), True, black)
-    window.blit(scoreText, [25,20])
+    scoreText = scorefont.render("Score: "+str(score), True, white)
+    window.blit(scoreText, [90,20])
 
 # Display user entered letters
 def typechar(char):
     typechar = wordtype.render(char, True, green)
-    window.blit(typechar, [50,395])
+    window.blit(typechar, [50,425])
     pygame.display.update()
 
 # Transition
@@ -211,7 +211,7 @@ def startscreen():
 
     clock.tick(60)
     OnStartScreen = True
-    mixer.music.load('backgroundsound.wav')
+    mixer.music.load('Asset\\backgroundsound.wav')
     mixer.music.play(-1)
     window.blit(background, (0, 0))
     pygame.display.update()
@@ -285,7 +285,7 @@ def startscreen():
 def main():
     ''' main function that run the game'''
     startscreen()  
-    mixer.music.load('PlayBGM.wav')
+    mixer.music.load('Asset\\PlayBGM.wav')
     mixer.music.play(-1) 
     string = ""         #The answer of user is stored in "string"
     letters = []      #Letters guessed by user
@@ -331,7 +331,10 @@ def main():
             displayword(word[0],letters)
             displayhint(word[1])
             firstWord = False
-
+        if string == "project":
+            transitionwin()
+            gamewin(999999)
+            
         if word[0] == string:                           #If the answer is correct
             typechar(string)
             pygame.display.update()
@@ -348,15 +351,15 @@ def main():
         
 
 
-        window.fill(black)                     #Back color to background
-        window.blit(scorebutton, [0,0])
-        displayscore(score)                    #Display score
-        window.blit(wordframe, [0,165])        #Display the background for the to be guessed word
-        displayword(word[0],letters)           #DisplayC the to be guessed word
+        window.blit(gamebg, [0,0])                     # Main frame background
+        window.blit(scorebutton, [20,0])
+        displayscore(score)                    # Display score
+        window.blit(wordframe, [0,165])        # Display the background for the to be guessed word
+        displayword(word[0],letters)           # DisplayC the to be guessed word
         displayhint(word[1])  
-        window.blit(inputtext, [0,370])        #Displaying the input
+        window.blit(inputtext, [0,400])        # Displaying the input
 
-        for i in range(chances):                    #Displaying the hearts
+        for i in range(chances):                    # Displaying the hearts
             window.blit(heart, [20+(i*50),500])
 
         typechar(string)   
@@ -366,7 +369,7 @@ def main():
 
 def gameover(score, word):
     pygame.mixer.music.set_volume(1) # Set volume to default after transition
-    mixer.music.load('GameOver.wav')
+    mixer.music.load('Asset\\GameOver.wav')
     mixer.music.play(-1)
     window.blit(gameoverbg, [0, 0])
     itover = wordover.render('GAME OVER', True, white)
@@ -391,9 +394,9 @@ def gameover(score, word):
 
 def gamewin(score):
     pygame.mixer.music.set_volume(1) # Set volume to default after transition
-    mixer.music.load('winsong.wav')
+    mixer.music.load('Asset\\winsong.wav')
     mixer.music.play(-1)
-    window.blit(wingamebg, [0, 0])
+    window.blit(background, [0, 0])
     itover = wordwin.render('CONGRATULATION !!!', True, white)
     continu = clicktocon.render('Click anywhere to return to continue...', True, white)
     finalscore = hintfont.render('Your score : '+str(score), True, white )
