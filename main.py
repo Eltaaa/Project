@@ -14,7 +14,7 @@ window = pygame.display.set_mode((width, height))
 icon = pygame.image.load('Asset\\Icon.png')
 pygame.display.set_icon(icon)
 pygame.display.set_caption('I WONDER')
-background = pygame.image.load('Asset\\background.png')
+background = pygame.image.load('Asset\\Background.png')
 
 # ----------,
 # CLOCK
