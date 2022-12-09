@@ -14,7 +14,7 @@ window = pygame.display.set_mode((width, height))
 icon = pygame.image.load('Icon.jpg')
 pygame.display.set_icon(icon)
 pygame.display.set_caption('Word Game')
-background = pygame.image.load('Backgroundimg.png')
+background = pygame.image.load('backgroundv2.jpg')
 
 # ----------,
 # CLOCK
@@ -43,6 +43,8 @@ wordover = pygame.font.SysFont("Calibri", 100)
 wordwin = pygame.font.SysFont("Calibri", 75)
 clicktocon = pygame.font.SysFont("Comic Sans MS", 25)
 answerfont = pygame.font.SysFont("Juice ITC", 35)
+ruleheadfont = pygame.font.SysFont("Comic Sans MS", 45)
+rulefont = pygame.font.SysFont("Comic Sans MS", 20)
 # ----------
 # IMAGE LOAD
 # ----------
@@ -162,6 +164,40 @@ def transitionwin():
     time.sleep(2)
     clock.tick(1)
 
+def rules():
+    pygame.mixer.music.set_volume(0.3) # Fade sound while using transition
+    for i in range(0,610,10):
+        pygame.draw.rect(window, black, [0,600-(i),800,50+(i)])
+        pygame.display.update()
+        clock.tick(50)
+    rulehead = ruleheadfont.render('RULES', True, white)
+    ruletxt1 = rulefont.render('1. You have 10 life for each round', True, white)
+    ruletxt2 = rulefont.render('2. There is no time limit', True, white)
+    ruletxt3 = rulefont.render("4. You'll lose 1 life if you guess wrong", True, white)
+    ruletxt4 = rulefont.render('5. If you think that the word contains certain letter type that and Enter', True, white)
+    ruletxt5 = rulefont.render('6. If the word contains it, it would be displayed (You lose life too)', True, white)
+    ruletxt6 = rulefont.render('8. If you know to word just type that word', True, white)
+    ruletxt7 = rulefont.render("9. If it correct you'll gain 100 points and go to next word", True, white)
+    window.blit(rulehead, [325, 50])
+    window.blit(ruletxt1, [70, 170])
+    window.blit(ruletxt2, [70, 225])
+    window.blit(ruletxt3, [70, 280])
+    window.blit(ruletxt4, [70, 335])
+    window.blit(ruletxt5, [70, 390])
+    window.blit(ruletxt6, [70, 445])
+    window.blit(ruletxt7, [70, 500])                                    
+    pygame.display.update()
+    clock.tick(1)
+    while True:
+        pygame.event.get()
+        cursor = pygame.mouse.get_pos()                                             
+        clicked = pygame.mouse.get_pressed()
+        if (0 <= cursor[1] <= 600 and 0 <= cursor[0] <= 800) and not(300 <= cursor[1] <= 300+30 and 330 <= cursor[0] <= 430)\
+            and not(400 <= cursor[1] <= 400+30 and 330 <= cursor[0] <= 430) and not(500 <= cursor[1] <= 500+30 and 345 <= cursor[0] <= 420): # Return to main menu and prevent double click at play button
+            if clicked[0] == 1:
+                break
+
+
 # Display correct answer
 def printanswer(word):
     msgAnswer = answerfont.render("The correct answer is: "+word[0], True, white)
@@ -175,7 +211,7 @@ def startscreen():
 
     clock.tick(60)
     OnStartScreen = True
-    titleBGM = mixer.music.load('backgroundsound.wav')
+    mixer.music.load('backgroundsound.wav')
     mixer.music.play(-1)
     window.blit(background, (0, 0))
     pygame.display.update()
@@ -196,16 +232,16 @@ def startscreen():
 
         # DISPLAY BUTTON
         playButtonText = mainmenufont.render('PLAY', True, white)
-        settingsButtonText = mainmenufont.render('SETTINGS', True, white)
+        settingsButtonText = mainmenufont.render('RULES', True, white)
         quitButtonText = mainmenufont.render('QUIT', True, white)
 
         window.blit(playButtonText, (350, 300))                         # display PLAY
-        window.blit(settingsButtonText, (315, 400))                     # display SETTINGS
-        window.blit(quitButtonText, (350, 500))                         # display QUIT
+        window.blit(settingsButtonText, (342, 400))                     # display SETTINGS
+        window.blit(quitButtonText, (346, 500))                         # display QUIT
         pygame.display.update()
 
         # PLAY BUTTON
-        if 300 <= cursor[1] <= 300+50 and 330 <= cursor[0] <= 430:      # Cursor on PLAY BUTTON level
+        if 300 <= cursor[1] <= 300+30 and 330 <= cursor[0] <= 430:      # Cursor on PLAY BUTTON level
             playOnHover = mainmenufont.render('PLAY', True, green)
             window.blit(playOnHover, (350, 300))
             pygame.display.update()
@@ -217,22 +253,25 @@ def startscreen():
                 pygame.display.update()
                 break
 
-        # SETTINGS
-        elif 400 <= cursor[1] <= 400+50 and 310 <= cursor[0] <= 450:                                # Cursor on SETTINGS BUTTON level
-            settingsOnHover = mainmenufont.render('SETTINGS', True, green)
+        # RULES
+        elif 400 <= cursor[1] <= 400+30 and 330 <= cursor[0] <= 430:                                # Cursor on RULES level
+            settingsOnHover = mainmenufont.render('RULES', True, green)
 
-            window.blit(settingsOnHover, (315, 400))
+            window.blit(settingsOnHover, (342, 400))
             pygame.display.update()
             clock.tick(60)
 
             if clicked[0] == 1:
                 clicknoise.play()
+                rules()
+                pygame.display.update()
+                
 
         # QUIT
-        elif 400 <= cursor[1] <= 500+50 and 345 <= cursor[0] <= 420:                                # Cursor on SETTINGS BUTTON level
+        elif 500 <= cursor[1] <= 500+30 and 345 <= cursor[0] <= 420:                                # Cursor on SETTINGS BUTTON level
             quitOnHover = mainmenufont.render('QUIT', True, green)
 
-            window.blit(quitOnHover, (350, 500))
+            window.blit(quitOnHover, (346, 500))
             pygame.display.update()
             clock.tick(60)
 
@@ -246,11 +285,11 @@ def startscreen():
 def main():
     ''' main function that run the game'''
     startscreen()  
-    BGMwhenplay = mixer.music.load('PlayBGM.wav')
+    mixer.music.load('PlayBGM.wav')
     mixer.music.play(-1) 
     string = ""         #The answer of user is stored in "string"
     letters = []      #Letters guessed by user
-    chances = 5         #Chances per match
+    chances = 10         #Chances per match
     score = 0           #Score
 
     Total = 0.0             #Total words
@@ -327,7 +366,7 @@ def main():
 
 def gameover(score, word):
     pygame.mixer.music.set_volume(1) # Set volume to default after transition
-    gameoversound = mixer.music.load('GameOver.wav')
+    mixer.music.load('GameOver.wav')
     mixer.music.play(-1)
     window.blit(gameoverbg, [0, 0])
     itover = wordover.render('GAME OVER', True, white)
@@ -343,7 +382,8 @@ def gameover(score, word):
         pygame.event.get()
         cursor = pygame.mouse.get_pos()                                              
         clicked = pygame.mouse.get_pressed()
-        if (0 <= cursor[1] <= 600 and 0 <= cursor[0] <= 800) and not(300 <= cursor[1] <= 300+50 and 330 <= cursor[0] <= 430): # Return to main menu and prevent double click at play button
+        if (0 <= cursor[1] <= 600 and 0 <= cursor[0] <= 800) and not(300 <= cursor[1] <= 300+30 and 330 <= cursor[0] <= 430)\
+        and not(400 <= cursor[1] <= 400+30 and 330 <= cursor[0] <= 430) and not(500 <= cursor[1] <= 500+30 and 345 <= cursor[0] <= 420): # Return to main menu and prevent double click at play button
             if clicked[0] == 1:
                 main()
 
@@ -351,7 +391,7 @@ def gameover(score, word):
 
 def gamewin(score):
     pygame.mixer.music.set_volume(1) # Set volume to default after transition
-    gamewinsound = mixer.music.load('winsong.wav')
+    mixer.music.load('winsong.wav')
     mixer.music.play(-1)
     window.blit(wingamebg, [0, 0])
     itover = wordwin.render('CONGRATULATION !!!', True, white)
@@ -365,7 +405,8 @@ def gamewin(score):
         pygame.event.get()
         cursor = pygame.mouse.get_pos()                                              
         clicked = pygame.mouse.get_pressed()
-        if (0 <= cursor[1] <= 600 and 0 <= cursor[0] <= 800) and not(300 <= cursor[1] <= 300+50 and 330 <= cursor[0] <= 430): # Return to main menu and prevent double click at play button
+        if (0 <= cursor[1] <= 600 and 0 <= cursor[0] <= 800) and not(300 <= cursor[1] <= 300+30 and 330 <= cursor[0] <= 430)\
+        and not(400 <= cursor[1] <= 400+30 and 330 <= cursor[0] <= 430) and not(500 <= cursor[1] <= 500+30 and 345 <= cursor[0] <= 420): # Return to main menu and prevent double click at play button
             if clicked[0] == 1:
                 main()
 
