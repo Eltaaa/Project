@@ -60,6 +60,8 @@ rulebg = pygame.image.load('Asset\\rulesbg.png')
 # SOUND
 # ----------
 clicknoise = mixer.Sound('Asset\\Click.wav')
+wrong = mixer.Sound('Asset\\hurt.wav')
+correct = mixer.Sound('Asset\\scoreup.wav')
 
 # Word list
 lst1 = ["apple", "banana", "guava", "watermelon", "grape", "mango", "lichi", "strawberry", "pear", "kiwi"]
@@ -125,7 +127,7 @@ def typechar(char):
 
 # Transition
 def transition():
-    pygame.mixer.music.set_volume(0.3) # Fade sound while using transition
+    pygame.mixer.music.set_volume(0.03) # Fade sound while using transition
     for i in range(0,610,10):
         pygame.draw.rect(window, black, [0,600-(i),800,50+(i)])
         pygame.display.update()
@@ -135,11 +137,11 @@ def transition():
     window.blit(start, [225,250])                                         
     pygame.display.update()
     time.sleep(1)
-    pygame.mixer.music.set_volume(1) # Set volume to default after transition
+    pygame.mixer.music.set_volume(0.05) # Set volume to default after transition
     clock.tick(1)
 
 def transitionend():
-    pygame.mixer.music.set_volume(0.1) # Fade sound while using transition
+    pygame.mixer.music.set_volume(0.01) # Fade sound while using transition
     for i in range(0,610,10):
         pygame.draw.rect(window, black, [0,600-(i),800,50+(i)])
         pygame.display.update()
@@ -153,7 +155,7 @@ def transitionend():
     clock.tick(1)
 
 def transitionwin():
-    pygame.mixer.music.set_volume(0.1) # Fade sound while using transition
+    pygame.mixer.music.set_volume(0.01) # Fade sound while using transition
     for i in range(0,610,10):
         pygame.draw.rect(window, black, [0,600-(i),800,50+(i)])
         pygame.display.update()
@@ -166,7 +168,7 @@ def transitionwin():
     clock.tick(1)
 
 def rules():
-    pygame.mixer.music.set_volume(0.3) # Fade sound while using transition
+    pygame.mixer.music.set_volume(0.03) # Fade sound while using transition
     for i in range(0,610,10):
         pygame.draw.rect(window, black, [0,600-(i),800,50+(i)])
         pygame.display.update()
@@ -197,6 +199,7 @@ def rules():
         if (0 <= cursor[1] <= 600 and 0 <= cursor[0] <= 800) and not(300 <= cursor[1] <= 300+30 and 330 <= cursor[0] <= 430)\
             and not(400 <= cursor[1] <= 400+30 and 330 <= cursor[0] <= 430) and not(500 <= cursor[1] <= 500+30 and 345 <= cursor[0] <= 420): # Return to main menu and prevent double click at play button
             if clicked[0] == 1:
+                window.fill(black)
                 break
 
 
@@ -210,7 +213,7 @@ def printanswer(word):
 # MAIN MENU
 def startscreen():
     ''' start game main menu'''
-
+    pygame.mixer.music.set_volume(0.1)
     clock.tick(60)
     OnStartScreen = True
     mixer.music.load('Asset\\backgroundsound.wav')
@@ -286,7 +289,7 @@ def startscreen():
 # MAIN GAME
 def main():
     ''' main function that run the game'''
-    startscreen()  
+    startscreen() 
     mixer.music.load('Asset\\PlayBGM.wav')
     mixer.music.play(-1) 
     string = ""         #The answer of user is stored in "string"
@@ -316,6 +319,7 @@ def main():
                         letters.extend(string[0])
                     string = ""                     #Every time enter is pressed, string is reseted
                     chances -= 1
+                    wrong.play()
                     if chances == 0:
                         transitionend()             # Use transition
                         time.sleep(1)
@@ -341,6 +345,7 @@ def main():
             typechar(string)
             pygame.display.update()
             score += 100
+            correct.play()
             if len(randomwords) != len(alllist):
                 word = chooseword(randomwords)
             elif len(randomwords) == len(alllist):
@@ -370,7 +375,7 @@ def main():
 # Game Over screen
 
 def gameover(score, word):
-    pygame.mixer.music.set_volume(1) # Set volume to default after transition
+    pygame.mixer.music.set_volume(0.1) # Set volume to default after transition
     mixer.music.load('Asset\\GameOver.wav')
     mixer.music.play(-1)
     window.blit(gameoverbg, [0, 0])
@@ -390,12 +395,13 @@ def gameover(score, word):
         if (0 <= cursor[1] <= 600 and 0 <= cursor[0] <= 800) and not(300 <= cursor[1] <= 300+30 and 330 <= cursor[0] <= 430)\
         and not(400 <= cursor[1] <= 400+30 and 330 <= cursor[0] <= 430) and not(500 <= cursor[1] <= 500+30 and 345 <= cursor[0] <= 420): # Return to main menu and prevent double click at play button
             if clicked[0] == 1:
+                window.fill(black)
                 main()
 
 # Game winning screen
 
 def gamewin(score):
-    pygame.mixer.music.set_volume(1) # Set volume to default after transition
+    pygame.mixer.music.set_volume(0.1) # Set volume to default after transition
     mixer.music.load('Asset\\winsong.wav')
     mixer.music.play(-1)
     window.blit(background, [0, 0])
