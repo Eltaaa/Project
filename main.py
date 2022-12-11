@@ -311,8 +311,12 @@ def main():
                 quit()
             if event.type == pygame.KEYDOWN:
                 if len(string) < 16:
-                    char = (chr(event.key))
-                    string += char
+                    try:
+                        char = (chr(event.key))
+                        string += char
+                    except:
+                        pass
+                
                 
                 if event.key == pygame.K_RETURN:
                     if len(string) == 2:                #If there is only one letter, it is added into letters (\n is also counted)
