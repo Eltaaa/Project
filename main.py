@@ -56,6 +56,7 @@ heart = pygame.image.load("Asset\\heart.png")
 gameoverbg = pygame.image.load('Asset\\gameoverbg.jpg')
 gamebg = pygame.image.load('Asset\\playbg.png')
 rulebg = pygame.image.load('Asset\\rulesbg.png')
+ruletrans = pygame.image.load('Asset\\rulestransition.png')
 # ----------
 # SOUND
 # ----------
@@ -170,9 +171,10 @@ def transitionwin():
 def rules():
     pygame.mixer.music.set_volume(0.03) # Fade sound while using transition
     for i in range(0,610,10):
-        pygame.draw.rect(window, black, [0,600-(i),800,50+(i)])
+        window.blit(ruletrans, [0,600-(i),800,50+(i)])
         pygame.display.update()
         clock.tick(50)
+    window.fill(black)
     window.blit(rulebg, [0, 0])
     rulehead = ruleheadfont.render('RULES', True, white)
     ruletxt1 = rulefont.render('1. You have 10 life for each round', True, white)
