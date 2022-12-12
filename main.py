@@ -312,7 +312,9 @@ def main():
                 pygame.quit()
                 quit()
             if event.type == pygame.KEYDOWN:
-                if len(string) < 16:
+                if event.key == pygame.K_RETURN:
+                    pass
+                elif len(string) < 16:
                     try:
                         char = (chr(event.key))
                         string += char
@@ -321,11 +323,25 @@ def main():
                 
                 
                 if event.key == pygame.K_RETURN:
-                    if len(string) == 2:                #If there is only one letter, it is added into letters (\n is also counted)
+                    if word[0] == string:
+                        score += 100
+                        correct.play()
+                        if len(randomwords) != len(alllist):
+                            word = chooseword(randomwords)
+                        elif len(randomwords) == len(alllist):
+                            transitionwin()
+                            time.sleep(1)
+                            gamewin(score)                         # Call win screen
+                        Total += 1
+                        string = ""
+                        letters = []
+
+
+                    elif len(string) == 2:                #If there is only one letter, it is added into letters (\n is also counted)
                         letters.extend(string[0])
-                    string = ""                     #Every time enter is pressed, string is reseted
-                    chances -= 1
-                    wrong.play()
+                        string = ""                     #Every time enter is pressed, string is reseted
+                        chances -= 1
+                        wrong.play()
                     if chances == 0:
                         transitionend()             # Use transition
                         time.sleep(1)
@@ -347,20 +363,6 @@ def main():
             transitionwin()
             gamewin(999999)
             
-        if word[0] == string:                           #If the answer is correct
-            typechar(string)
-            pygame.display.update()
-            score += 100
-            correct.play()
-            if len(randomwords) != len(alllist):
-                word = chooseword(randomwords)
-            elif len(randomwords) == len(alllist):
-                transitionwin()
-                time.sleep(1)
-                gamewin(score)                         # Call win screen
-            Total += 1
-            string = ""
-            letters = []
         
 
 
