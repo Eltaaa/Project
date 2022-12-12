@@ -312,9 +312,8 @@ def main():
                 pygame.quit()
                 quit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    pass
-                elif len(string) < 16:
+                
+                if len(string) < 16 and event.key != pygame.K_RETURN:
                     try:
                         char = (chr(event.key))
                         string += char
@@ -337,8 +336,12 @@ def main():
                         letters = []
 
 
-                    elif len(string) == 2:                #If there is only one letter, it is added into letters (\n is also counted)
+                    elif len(string) == 1:                #If there is only one letter, it is added into letters (\n is also counted)
                         letters.extend(string[0])
+                        string = ""                     #Every time enter is pressed, string is reseted
+                        chances -= 1
+                        wrong.play()
+                    else:
                         string = ""                     #Every time enter is pressed, string is reseted
                         chances -= 1
                         wrong.play()
@@ -362,7 +365,7 @@ def main():
         if string == "project":
             transitionwin()
             gamewin(999999)
-            
+
         
 
 
